@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌙 ঈদ মোবারক সারপ্রাইজ</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  text-align:center;
+  color:white;
+  background: linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1c1c1c);
+  background-size: 400% 400%;
+  animation: gradient 8s ease infinite;
+}
+
+@keyframes gradient{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+.container{
+  padding:40px 20px;
+}
+
+h1{
+  font-size:28px;
+}
+
+#countdown{
+  font-size:20px;
+  margin:20px 0;
+  color:#ffd700;
+}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:6px;
+  margin:10px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.surprise{
+  background:#ffd700;
+  color:black;
+}
+
+.whatsapp{
+  background:#25D366;
+  color:white;
+}
+
+.facebook{
+  background:#1877F2;
+  color:white;
+}
+
+.popup{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+}
+
+.popup-content{
+  background:white;
+  color:black;
+  padding:30px;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🌙 ঈদ মোবারক সারপ্রাইজ 🌙</h1>
+  <div id="countdown"></div>
+
+  <button class="surprise" onclick="showPopup()">🎁 সারপ্রাইজ দেখুন</button><br>
+
+  <button class="whatsapp" onclick="shareWhatsApp()">WhatsApp এ শেয়ার করুন</button>
+  <button class="facebook" onclick="shareFacebook()">Facebook এ শেয়ার করুন</button>
+</div>
+
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <h2>🎉 ঈদ মোবারক 🎉</h2>
+    <p>তোমার জীবন সুখ, শান্তি ও ভালোবাসায় ভরে উঠুক ❤️</p>
+    <button onclick="closePopup()">বন্ধ করুন</button>
+  </div>
+</div>
+
+<script>
+// Countdown
+var eidDate = new Date("March 31, 2026 00:00:00").getTime();
+
+setInterval(function(){
+  var now = new Date().getTime();
+  var distance = eidDate - now;
+
+  var days = Math.floor(distance / (1000*60*60*24));
+  var hours = Math.floor((distance % (1000*60*60*24))/(1000*60*60));
+  var minutes = Math.floor((distance % (1000*60*60))/(1000*60));
+  var seconds = Math.floor((distance % (1000*60))/1000);
+
+  document.getElementById("countdown").innerHTML =
+  "ঈদ আসতে বাকি: " + days + " দিন " + hours + " ঘন্টা "
+  + minutes + " মিনিট " + seconds + " সেকেন্ড";
+},1000);
+
+// Popup
+function showPopup(){
+  document.getElementById("popup").style.display="flex";
+}
+
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
+
+// Share
+function shareWhatsApp(){
+  var url = window.location.href;
+  window.open("https://wa.me/?text=দেখো এই ঈদ সারপ্রাইজ 👉 " + url);
+}
+
+function shareFacebook(){
+  var url = window.location.href;
+  window.open("https://www.facebook.com/sharer/sharer.php?u=" + url);
+}
+</script>
+
+</body>
+</html>
