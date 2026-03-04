@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SurpriseByTaher | Colorful Eid</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+
+html,body{
+height:100%;
+overflow:hidden;
+text-align:center;
+color:white;
+background:linear-gradient(135deg,#ff0000,#0000ff,#ffff00);
+background-size:400% 400%;
+animation:bgMove 8s infinite alternate;
+}
+
+@keyframes bgMove{
+0%{background-position:left;}
+100%{background-position:right;}
+}
+
+.container{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+input{
+padding:12px;
+border-radius:25px;
+border:none;
+text-align:center;
+margin-bottom:15px;
+font-size:16px;
+}
+
+button{
+padding:12px 25px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+margin:8px;
+font-weight:bold;
+font-size:16px;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.1);
+}
+
+.start{
+background:#ff0000;
+color:white;
+}
+
+.whatsapp{
+background:#0000ff;
+color:white;
+}
+
+.gift-box{
+width:240px;
+height:240px;
+background:#ffff00;
+margin-top:20px;
+position:relative;
+cursor:pointer;
+display:none;
+animation:bounce 1s infinite;
+border-radius:20px;
+box-shadow:0 0 40px #ff0000;
+}
+
+.gift-box:before{
+content:"";
+position:absolute;
+width:100%;
+height:45px;
+background:#0000ff;
+top:100px;
+}
+
+.gift-box:after{
+content:"";
+position:absolute;
+width:45px;
+height:100%;
+background:#ff0000;
+left:100px;
+}
+
+@keyframes bounce{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-18px)}
+}
+
+#message{
+display:none;
+margin-top:20px;
+font-size:24px;
+font-weight:bold;
+text-shadow:0 0 10px #fff;
+}
+
+#timer{
+margin-top:15px;
+font-size:20px;
+color:#0000ff;
+font-weight:bold;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<input type="text" id="nameInput" placeholder="তোমার নাম লিখো 😊">
+<button class="start" onclick="start()">সারপ্রাইজ দেখো</button>
+
+<div class="gift-box" onclick="openGift()"></div>
+
+<div id="message"></div>
+<div id="timer"></div>
+
+<button class="whatsapp" id="shareBtn" style="display:none;" onclick="share()">WhatsApp শেয়ার</button>
+
+</div>
+
+<audio id="sound">
+<source src="https://www.soundjay.com/explosion/explosion-01.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="canvas"></canvas>
+
+<script>
+let userName="";
+let canvas=document.getElementById("canvas");
+let ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+let particles=[];
+
+function start(){
+userName=document.getElementById("nameInput").value;
+if(userName===""){alert("নাম লিখো 😊");return;}
+document.querySelector(".gift-box").style.display="block";
+}
+
+function openGift(){
+document.querySelector(".gift-box").style.display="none";
+document.getElementById("sound").play();
+
+document.getElementById("message").style.display="block";
+document.getElementById("message").innerHTML=
+"🎉 "+userName+" তোমাকে ঈদের অগ্রিম শুভেচ্ছা 🌙✨";
+
+document.getElementById("shareBtn").style.display="inline-block";
+
+setInterval(()=>{
+createFirework(Math.random()*canvas.width,Math.random()*canvas.height/2);
+},700);
+}
+
+function createFirework(x,y){
+for(let i=0;i<80;i++){
+particles.push({
+x,y,
+radius:3,
+color:["#ff0000","#0000ff","#ffff00"][Math.floor(Math.random()*3)],
+speedX:(Math.random()-0.5)*8,
+speedY:(Math.random()-0.5)*8,
+life:100
+});
+}
+}
+
+function animate(){
+ctx.fillStyle="rgba(255,255,255,0.1)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+particles.forEach((p,i)=>{
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+ctx.fillStyle=p.color;
+ctx.fill();
+p.x+=p.speedX;
+p.y+=p.speedY;
+p.life--;
+if(p.life<=0) particles.splice(i,1);
+});
+
+requestAnimationFrame(animate);
+}
+animate();
+
+function share(){
+let url=window.location.href;
+window.open("https://wa.me/?text="+userName+" এর জন্য রঙিন ঈদ সারপ্রাইজ 👉 "+url);
+}
+
+/* Eid Countdown */
+let eidDate=new Date("April 10, 2026 00:00:00").getTime();
+
+setInterval(()=>{
+let now=new Date().getTime();
+let gap=eidDate-now;
+
+let days=Math.floor(gap/(1000*60*60*24));
+let hours=Math.floor((gap%(1000*60*60*24))/(1000*60*60));
+let mins=Math.floor((gap%(1000*60*60))/(1000*60));
+
+if(gap>0){
+document.getElementById("timer").innerHTML=
+"🟡 ঈদ আসতে বাকি: "+days+" দিন "+hours+" ঘন্টা "+mins+" মিনিট";
+}
+},1000);
+
+</script>
+
+</body>
+</html>
